@@ -58,13 +58,23 @@
         if(strpos($track, '(', 0) === false || strpos($track, ')', 0) === false){
           $name = $track;
         }else{
-          $lavel = substr($track,strpos($track, '(', 0)+1,strpos($track, ')', 0)-1);
-          $code = dechex(crc32("(".$lavel.")"));
+        //   $lavel = substr($track,strpos($track, '(', 0)+1,strpos($track, ')', 0)-1);
+        //   $code = dechex(crc32("(".$lavel.")"));
+        //   $color = substr($code, 0, 6);
+        //   $text = substr($track,strpos($track, ')', 0)+1,-4);
+        //   $inverseColor = 0xFFFFFF - ((int)('0x1'.$color))  ;
+        //   $name = '<span style="color:#'.$color.';">('.$lavel.') </span>'.'<span style="color:#'.$color.';">'.$text.'</span>';
+        // }
+        $name = "";
+        $splited = (explode("(",substr($track,0,-4)));
+        for ($i=1; $i<count($splited); ++$i){
+          $labelAndNotLabel = (explode(")",$splited[$i]));
+          $code = dechex(crc32("(".$labelAndNotLabel[0].")"));
           $color = substr($code, 0, 6);
-          $text = substr($track,strpos($track, ')', 0)+1,-4);
-          $inverseColor = 0xFFFFFF - ((int)('0x1'.$color))  ;
-          $name = '<span style="color:#'.$color.';">('.$lavel.') </span>'.'<span style="color:#'.$color.';">'.$text.'</span>';
+          $name .= '<span style="color:#'.$color.';">('.$labelAndNotLabel[0].') </span>'.'<span style="color:#'.$color.';">'.$labelAndNotLabel[1].'</span>';
         }
+      }
+     
     ?>
     <tr>
       <td> <?php echo $name; ?></td>
